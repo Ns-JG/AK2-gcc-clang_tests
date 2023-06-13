@@ -4056,6 +4056,478 @@ LBB0_219:                               ## =>This Inner Loop Header: Depth=1
 	retq
 	.cfi_endproc
                                         ## -- End function
+	.globl	_matrixMultiplication           ## -- Begin function matrixMultiplication
+	.p2align	4, 0x90
+_matrixMultiplication:                  ## @matrixMultiplication
+	.cfi_startproc
+## %bb.0:
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	xorl	%r8d, %r8d
+	.p2align	4, 0x90
+LBB1_1:                                 ## =>This Loop Header: Depth=1
+                                        ##     Child Loop BB1_2 Depth 2
+                                        ##       Child Loop BB1_3 Depth 3
+	movq	(%rdx,%r8,8), %r9
+	movq	(%rdi,%r8,8), %r10
+	xorl	%r11d, %r11d
+	.p2align	4, 0x90
+LBB1_2:                                 ##   Parent Loop BB1_1 Depth=1
+                                        ## =>  This Loop Header: Depth=2
+                                        ##       Child Loop BB1_3 Depth 3
+	movl	$0, (%r9,%r11,4)
+	vxorps	%xmm0, %xmm0, %xmm0
+	movl	$1, %eax
+	.p2align	4, 0x90
+LBB1_3:                                 ##   Parent Loop BB1_1 Depth=1
+                                        ##     Parent Loop BB1_2 Depth=2
+                                        ## =>    This Inner Loop Header: Depth=3
+	vmovss	-4(%r10,%rax,4), %xmm1          ## xmm1 = mem[0],zero,zero,zero
+	movq	-8(%rsi,%rax,8), %rcx
+	vmulss	(%rcx,%r11,4), %xmm1, %xmm1
+	vaddss	%xmm1, %xmm0, %xmm0
+	vmovss	%xmm0, (%r9,%r11,4)
+	vmovss	(%r10,%rax,4), %xmm1            ## xmm1 = mem[0],zero,zero,zero
+	movq	(%rsi,%rax,8), %rcx
+	vmulss	(%rcx,%r11,4), %xmm1, %xmm1
+	vaddss	%xmm1, %xmm0, %xmm0
+	vmovss	%xmm0, (%r9,%r11,4)
+	addq	$2, %rax
+	cmpq	$1001, %rax                     ## imm = 0x3E9
+	jne	LBB1_3
+## %bb.4:                               ##   in Loop: Header=BB1_2 Depth=2
+	addq	$1, %r11
+	cmpq	$1000, %r11                     ## imm = 0x3E8
+	jne	LBB1_2
+## %bb.5:                               ##   in Loop: Header=BB1_1 Depth=1
+	addq	$1, %r8
+	cmpq	$1000, %r8                      ## imm = 0x3E8
+	jne	LBB1_1
+## %bb.6:
+	popq	%rbp
+	retq
+	.cfi_endproc
+                                        ## -- End function
+	.globl	_fibonacciSequence              ## -- Begin function fibonacciSequence
+	.p2align	4, 0x90
+_fibonacciSequence:                     ## @fibonacciSequence
+	.cfi_startproc
+## %bb.0:
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	movabsq	$4294967296, %rax               ## imm = 0x100000000
+	movq	%rax, (%rsi)
+	cmpl	$3, %edi
+	jl	LBB2_7
+## %bb.1:
+	movl	$1, 8(%rsi)
+	cmpl	$3, %edi
+	je	LBB2_7
+## %bb.2:
+	movl	%edi, %ecx
+	leaq	-3(%rcx), %r8
+	addq	$-4, %rcx
+	movl	%r8d, %eax
+	andl	$3, %eax
+	cmpq	$3, %rcx
+	jae	LBB2_8
+## %bb.3:
+	movl	$2, %edi
+	movl	$1, %ecx
+	movl	$3, %edx
+	testq	%rax, %rax
+	jne	LBB2_6
+	jmp	LBB2_7
+LBB2_8:
+	andq	$-4, %r8
+	negq	%r8
+	movl	$1, %ecx
+	movl	$3, %edx
+	.p2align	4, 0x90
+LBB2_9:                                 ## =>This Inner Loop Header: Depth=1
+	addl	-8(%rsi,%rdx,4), %ecx
+	movl	%ecx, (%rsi,%rdx,4)
+	movl	-4(%rsi,%rdx,4), %edi
+	addl	%ecx, %edi
+	movl	%edi, 4(%rsi,%rdx,4)
+	addl	%edi, %ecx
+	movl	%ecx, 8(%rsi,%rdx,4)
+	addl	%edi, %ecx
+	movl	%ecx, 12(%rsi,%rdx,4)
+	leaq	(%r8,%rdx), %rdi
+	addq	$4, %rdi
+	addq	$4, %rdx
+	cmpq	$3, %rdi
+	jne	LBB2_9
+## %bb.4:
+	leaq	-1(%rdx), %rdi
+	testq	%rax, %rax
+	je	LBB2_7
+	.p2align	4, 0x90
+LBB2_6:                                 ## =>This Inner Loop Header: Depth=1
+	addl	-4(%rsi,%rdi,4), %ecx
+	movl	%ecx, (%rsi,%rdx,4)
+	movq	%rdx, %rdi
+	addq	$1, %rdx
+	addq	$-1, %rax
+	jne	LBB2_6
+LBB2_7:
+	popq	%rbp
+	retq
+	.cfi_endproc
+                                        ## -- End function
+	.globl	_isPrime                        ## -- Begin function isPrime
+	.p2align	4, 0x90
+_isPrime:                               ## @isPrime
+	.cfi_startproc
+## %bb.0:
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	xorl	%eax, %eax
+	popq	%rbp
+	retq
+	.cfi_endproc
+                                        ## -- End function
+	.globl	_generatePrimes                 ## -- Begin function generatePrimes
+	.p2align	4, 0x90
+_generatePrimes:                        ## @generatePrimes
+	.cfi_startproc
+## %bb.0:
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	popq	%rbp
+	retq
+	.cfi_endproc
+                                        ## -- End function
+	.globl	_exponentialFunction            ## -- Begin function exponentialFunction
+	.p2align	4, 0x90
+_exponentialFunction:                   ## @exponentialFunction
+	.cfi_startproc
+## %bb.0:
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	pushq	%r15
+	pushq	%r14
+	pushq	%rbx
+	subq	$40, %rsp
+	.cfi_offset %rbx, -40
+	.cfi_offset %r14, -32
+	.cfi_offset %r15, -24
+	movq	%rsi, %r14
+	movq	%rdi, %r15
+	leaq	4000(%rdi), %rax
+	cmpq	%rsi, %rax
+	jbe	LBB5_2
+## %bb.1:
+	leaq	4000(%r14), %rax
+	cmpq	%r15, %rax
+	jbe	LBB5_2
+## %bb.5:
+	movl	$4, %ebx
+	.p2align	4, 0x90
+LBB5_6:                                 ## =>This Inner Loop Header: Depth=1
+	vmovss	-16(%r15,%rbx,4), %xmm0         ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovss	%xmm0, -16(%r14,%rbx,4)
+	vmovss	-12(%r15,%rbx,4), %xmm0         ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovss	%xmm0, -12(%r14,%rbx,4)
+	vmovss	-8(%r15,%rbx,4), %xmm0          ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovss	%xmm0, -8(%r14,%rbx,4)
+	vmovss	-4(%r15,%rbx,4), %xmm0          ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovss	%xmm0, -4(%r14,%rbx,4)
+	vmovss	(%r15,%rbx,4), %xmm0            ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovss	%xmm0, (%r14,%rbx,4)
+	addq	$5, %rbx
+	cmpq	$1004, %rbx                     ## imm = 0x3EC
+	jne	LBB5_6
+	jmp	LBB5_4
+LBB5_2:
+	movl	$4, %ebx
+	.p2align	4, 0x90
+LBB5_3:                                 ## =>This Inner Loop Header: Depth=1
+	vmovss	-16(%r15,%rbx,4), %xmm0         ## xmm0 = mem[0],zero,zero,zero
+	vmovss	%xmm0, -48(%rbp)                ## 4-byte Spill
+	vmovss	-12(%r15,%rbx,4), %xmm0         ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovaps	%xmm0, -64(%rbp)                ## 16-byte Spill
+	vmovss	-48(%rbp), %xmm0                ## 4-byte Reload
+                                        ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vinsertps	$16, -64(%rbp), %xmm0, %xmm0 ## 16-byte Folded Reload
+                                        ## xmm0 = xmm0[0],mem[0],xmm0[2,3]
+	vmovaps	%xmm0, -48(%rbp)                ## 16-byte Spill
+	vmovss	-8(%r15,%rbx,4), %xmm0          ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovaps	-48(%rbp), %xmm1                ## 16-byte Reload
+	vinsertps	$32, %xmm0, %xmm1, %xmm0 ## xmm0 = xmm1[0,1],xmm0[0],xmm1[3]
+	vmovaps	%xmm0, -48(%rbp)                ## 16-byte Spill
+	vmovss	-4(%r15,%rbx,4), %xmm0          ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovaps	-48(%rbp), %xmm1                ## 16-byte Reload
+	vinsertps	$48, %xmm0, %xmm1, %xmm0 ## xmm0 = xmm1[0,1,2],xmm0[0]
+	vmovups	%xmm0, -16(%r14,%rbx,4)
+	vmovss	(%r15,%rbx,4), %xmm0            ## xmm0 = mem[0],zero,zero,zero
+	vmovss	%xmm0, -48(%rbp)                ## 4-byte Spill
+	vmovss	4(%r15,%rbx,4), %xmm0           ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovaps	%xmm0, -64(%rbp)                ## 16-byte Spill
+	vmovss	-48(%rbp), %xmm0                ## 4-byte Reload
+                                        ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vinsertps	$16, -64(%rbp), %xmm0, %xmm0 ## 16-byte Folded Reload
+                                        ## xmm0 = xmm0[0],mem[0],xmm0[2,3]
+	vmovaps	%xmm0, -48(%rbp)                ## 16-byte Spill
+	vmovss	8(%r15,%rbx,4), %xmm0           ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovaps	-48(%rbp), %xmm1                ## 16-byte Reload
+	vinsertps	$32, %xmm0, %xmm1, %xmm0 ## xmm0 = xmm1[0,1],xmm0[0],xmm1[3]
+	vmovaps	%xmm0, -48(%rbp)                ## 16-byte Spill
+	vmovss	12(%r15,%rbx,4), %xmm0          ## xmm0 = mem[0],zero,zero,zero
+	callq	_expf
+	vmovaps	-48(%rbp), %xmm1                ## 16-byte Reload
+	vinsertps	$48, %xmm0, %xmm1, %xmm0 ## xmm0 = xmm1[0,1,2],xmm0[0]
+	vmovups	%xmm0, (%r14,%rbx,4)
+	addq	$8, %rbx
+	cmpq	$1004, %rbx                     ## imm = 0x3EC
+	jne	LBB5_3
+LBB5_4:
+	addq	$40, %rsp
+	popq	%rbx
+	popq	%r14
+	popq	%r15
+	popq	%rbp
+	retq
+	.cfi_endproc
+                                        ## -- End function
+	.globl	_unrolledVectorSum              ## -- Begin function unrolledVectorSum
+	.p2align	4, 0x90
+_unrolledVectorSum:                     ## @unrolledVectorSum
+	.cfi_startproc
+## %bb.0:
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	vxorps	%xmm0, %xmm0, %xmm0
+	movq	$-4, %rax
+	.p2align	4, 0x90
+LBB6_1:                                 ## =>This Inner Loop Header: Depth=1
+	vmovss	16(%rdi,%rax,4), %xmm1          ## xmm1 = mem[0],zero,zero,zero
+	vmovss	32(%rdi,%rax,4), %xmm2          ## xmm2 = mem[0],zero,zero,zero
+	vaddss	20(%rdi,%rax,4), %xmm1, %xmm1
+	vaddss	24(%rdi,%rax,4), %xmm1, %xmm1
+	vaddss	28(%rdi,%rax,4), %xmm1, %xmm1
+	vaddss	36(%rdi,%rax,4), %xmm2, %xmm2
+	vaddss	40(%rdi,%rax,4), %xmm2, %xmm2
+	vaddss	44(%rdi,%rax,4), %xmm2, %xmm2
+	vaddss	%xmm1, %xmm0, %xmm0
+	vaddss	%xmm2, %xmm0, %xmm0
+	addq	$8, %rax
+	cmpq	$996, %rax                      ## imm = 0x3E4
+	jb	LBB6_1
+## %bb.2:
+	popq	%rbp
+	retq
+	.cfi_endproc
+                                        ## -- End function
+	.globl	_unrolledMatrixTranspose        ## -- Begin function unrolledMatrixTranspose
+	.p2align	4, 0x90
+_unrolledMatrixTranspose:               ## @unrolledMatrixTranspose
+	.cfi_startproc
+## %bb.0:
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	xorl	%r8d, %r8d
+	.p2align	4, 0x90
+LBB7_1:                                 ## =>This Loop Header: Depth=1
+                                        ##     Child Loop BB7_2 Depth 2
+	movq	(%rdi,%r8,8), %r9
+	movq	%r8, %r11
+	orq	$1, %r11
+	movq	(%rdi,%r11,8), %r10
+	movq	$-2, %rcx
+	.p2align	4, 0x90
+LBB7_2:                                 ##   Parent Loop BB7_1 Depth=1
+                                        ## =>  This Inner Loop Header: Depth=2
+	vmovss	8(%r9,%rcx,4), %xmm0            ## xmm0 = mem[0],zero,zero,zero
+	movq	16(%rsi,%rcx,8), %rax
+	vmovss	%xmm0, (%rax,%r8,4)
+	vmovss	12(%r9,%rcx,4), %xmm0           ## xmm0 = mem[0],zero,zero,zero
+	movq	24(%rsi,%rcx,8), %rdx
+	vmovss	%xmm0, (%rdx,%r8,4)
+	vmovss	8(%r10,%rcx,4), %xmm0           ## xmm0 = mem[0],zero,zero,zero
+	vmovss	%xmm0, (%rax,%r11,4)
+	vmovss	12(%r10,%rcx,4), %xmm0          ## xmm0 = mem[0],zero,zero,zero
+	vmovss	%xmm0, (%rdx,%r11,4)
+	addq	$2, %rcx
+	cmpq	$998, %rcx                      ## imm = 0x3E6
+	jb	LBB7_2
+## %bb.3:                               ##   in Loop: Header=BB7_1 Depth=1
+	leaq	2(%r8), %rax
+	cmpq	$998, %r8                       ## imm = 0x3E6
+	movq	%rax, %r8
+	jb	LBB7_1
+## %bb.4:
+	popq	%rbp
+	retq
+	.cfi_endproc
+                                        ## -- End function
+	.globl	_collapsedMatrixAddition        ## -- Begin function collapsedMatrixAddition
+	.p2align	4, 0x90
+_collapsedMatrixAddition:               ## @collapsedMatrixAddition
+	.cfi_startproc
+## %bb.0:
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	xorl	%r8d, %r8d
+	.p2align	4, 0x90
+LBB8_1:                                 ## =>This Loop Header: Depth=1
+                                        ##     Child Loop BB8_2 Depth 2
+	movq	(%rdi,%r8,8), %r9
+	movq	(%rsi,%r8,8), %r10
+	movq	(%rdx,%r8,8), %rcx
+	movq	$-2, %rax
+	.p2align	4, 0x90
+LBB8_2:                                 ##   Parent Loop BB8_1 Depth=1
+                                        ## =>  This Inner Loop Header: Depth=2
+	vmovss	8(%r9,%rax,4), %xmm0            ## xmm0 = mem[0],zero,zero,zero
+	vaddss	8(%r10,%rax,4), %xmm0, %xmm0
+	vmovss	%xmm0, 8(%rcx,%rax,4)
+	vmovss	12(%r9,%rax,4), %xmm0           ## xmm0 = mem[0],zero,zero,zero
+	vaddss	12(%r10,%rax,4), %xmm0, %xmm0
+	vmovss	%xmm0, 12(%rcx,%rax,4)
+	vmovss	16(%r9,%rax,4), %xmm0           ## xmm0 = mem[0],zero,zero,zero
+	vaddss	16(%r10,%rax,4), %xmm0, %xmm0
+	vmovss	%xmm0, 16(%rcx,%rax,4)
+	vmovss	20(%r9,%rax,4), %xmm0           ## xmm0 = mem[0],zero,zero,zero
+	vaddss	20(%r10,%rax,4), %xmm0, %xmm0
+	vmovss	%xmm0, 20(%rcx,%rax,4)
+	addq	$4, %rax
+	cmpq	$998, %rax                      ## imm = 0x3E6
+	jb	LBB8_2
+## %bb.3:                               ##   in Loop: Header=BB8_1 Depth=1
+	addq	$1, %r8
+	cmpq	$1000, %r8                      ## imm = 0x3E8
+	jne	LBB8_1
+## %bb.4:
+	popq	%rbp
+	retq
+	.cfi_endproc
+                                        ## -- End function
+	.globl	_collapsedVectorMultiplication  ## -- Begin function collapsedVectorMultiplication
+	.p2align	4, 0x90
+_collapsedVectorMultiplication:         ## @collapsedVectorMultiplication
+	.cfi_startproc
+## %bb.0:
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	movq	$-2, %rax
+	.p2align	4, 0x90
+LBB9_1:                                 ## =>This Inner Loop Header: Depth=1
+	vmovss	8(%rdi,%rax,4), %xmm0           ## xmm0 = mem[0],zero,zero,zero
+	vmulss	8(%rsi,%rax,4), %xmm0, %xmm0
+	vmovss	%xmm0, 8(%rdx,%rax,4)
+	vmovss	12(%rdi,%rax,4), %xmm0          ## xmm0 = mem[0],zero,zero,zero
+	vmulss	12(%rsi,%rax,4), %xmm0, %xmm0
+	vmovss	%xmm0, 12(%rdx,%rax,4)
+	vmovss	16(%rdi,%rax,4), %xmm0          ## xmm0 = mem[0],zero,zero,zero
+	vmulss	16(%rsi,%rax,4), %xmm0, %xmm0
+	vmovss	%xmm0, 16(%rdx,%rax,4)
+	vmovss	20(%rdi,%rax,4), %xmm0          ## xmm0 = mem[0],zero,zero,zero
+	vmulss	20(%rsi,%rax,4), %xmm0, %xmm0
+	vmovss	%xmm0, 20(%rdx,%rax,4)
+	addq	$4, %rax
+	cmpq	$998, %rax                      ## imm = 0x3E6
+	jb	LBB9_1
+## %bb.2:
+	popq	%rbp
+	retq
+	.cfi_endproc
+                                        ## -- End function
+	.globl	_nestedMatrixMultiplication     ## -- Begin function nestedMatrixMultiplication
+	.p2align	4, 0x90
+_nestedMatrixMultiplication:            ## @nestedMatrixMultiplication
+	.cfi_startproc
+## %bb.0:
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register %rbp
+	xorl	%r8d, %r8d
+	.p2align	4, 0x90
+LBB10_1:                                ## =>This Loop Header: Depth=1
+                                        ##     Child Loop BB10_2 Depth 2
+                                        ##       Child Loop BB10_3 Depth 3
+	movq	(%rdx,%r8,8), %r9
+	movq	(%rdi,%r8,8), %r10
+	xorl	%r11d, %r11d
+	.p2align	4, 0x90
+LBB10_2:                                ##   Parent Loop BB10_1 Depth=1
+                                        ## =>  This Loop Header: Depth=2
+                                        ##       Child Loop BB10_3 Depth 3
+	movl	$0, (%r9,%r11,4)
+	vxorps	%xmm0, %xmm0, %xmm0
+	movl	$1, %eax
+	.p2align	4, 0x90
+LBB10_3:                                ##   Parent Loop BB10_1 Depth=1
+                                        ##     Parent Loop BB10_2 Depth=2
+                                        ## =>    This Inner Loop Header: Depth=3
+	vmovss	-4(%r10,%rax,4), %xmm1          ## xmm1 = mem[0],zero,zero,zero
+	movq	-8(%rsi,%rax,8), %rcx
+	vmulss	(%rcx,%r11,4), %xmm1, %xmm1
+	vaddss	%xmm1, %xmm0, %xmm0
+	vmovss	%xmm0, (%r9,%r11,4)
+	vmovss	(%r10,%rax,4), %xmm1            ## xmm1 = mem[0],zero,zero,zero
+	movq	(%rsi,%rax,8), %rcx
+	vmulss	(%rcx,%r11,4), %xmm1, %xmm1
+	vaddss	%xmm1, %xmm0, %xmm0
+	vmovss	%xmm0, (%r9,%r11,4)
+	addq	$2, %rax
+	cmpq	$1001, %rax                     ## imm = 0x3E9
+	jne	LBB10_3
+## %bb.4:                               ##   in Loop: Header=BB10_2 Depth=2
+	addq	$1, %r11
+	cmpq	$1000, %r11                     ## imm = 0x3E8
+	jne	LBB10_2
+## %bb.5:                               ##   in Loop: Header=BB10_1 Depth=1
+	addq	$1, %r8
+	cmpq	$1000, %r8                      ## imm = 0x3E8
+	jne	LBB10_1
+## %bb.6:
+	popq	%rbp
+	retq
+	.cfi_endproc
+                                        ## -- End function
 	.comm	_in,4000,4                      ## @in
 	.comm	_out,4000,4                     ## @out
 	.comm	_in_2d,4000000,4                ## @in_2d
