@@ -1,0 +1,18 @@
+gcc flags for SIMD: 
+
+-O3 -march=skylake-avx512 -mno-vzeroupper
+
+-ftree-vectorize -O3
+
+x86:  -msse lub -msse2 dla rozszerzen sse
+
+for verbose output:  -ftree-vectorizer-verbose
+
+gcc -S -o out.s in.cpp -ftree-vectorizer-verbose -O3 -vec-report2
+
+Dla clang / clang++:
+-Rpass=loop-vectorize 
+-Rpass-missed=loop-vectorize 
+-Rpass-analysis=loop-vectorize 
+
+gcc -S -o out.s in.cpp -ftree-vectorizer-verbose -O3 -Rpass=loop-vectorize
